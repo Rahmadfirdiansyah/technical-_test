@@ -27,6 +27,19 @@ DELETE /tasks/:id
 ## 🔍 Issues Found
 
 1. Incorrect HTTP status code when task is not found (returned 200 instead of 404)
+
+#### Before 
+
+```http
+  GET /api/items
+```
+
+#### After
+
+```http
+  GET /api/items
+```
+
 2. Missing input validation in CreateTask (allowed empty title)
 3. No error handling for invalid ID (strconv.Atoi error ignored)
 4. Delete endpoint always returned success even if task was not found
