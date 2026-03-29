@@ -21,24 +21,47 @@ GET /tasks/:id
 POST /tasks  
 DELETE /tasks/:id
 
-## Your Tasks
 
-1. Run the project
-2. Identify issues or bugs
-3. Fix the issues
-4. Add one improvement to the project
+---
 
-Examples of improvements:
-- input validation
-- better error handling
-- improved API responses
-- code refactoring
+## 🔍 Issues Found
 
-## Submission
+1. Incorrect HTTP status code when task is not found (returned 200 instead of 404)
+2. Missing input validation in CreateTask (allowed empty title)
+3. No error handling for invalid ID (strconv.Atoi error ignored)
+4. Delete endpoint always returned success even if task was not found
+5. Task ID was not auto-generated, causing potential duplicate IDs
 
-Submit a GitHub repository containing:
-- your updated code
-- a README explaining:
-  - what issues you found
-  - how you fixed them
-  - what improvement you added
+---
+
+## 🔧 Fixes Implemented
+
+1. Updated HTTP status code to 404 when task is not found
+2. Added validation to ensure title is not empty
+3. Added error handling for invalid ID input (return 400 Bad Request)
+4. Improved delete logic to return 404 if task does not exist
+5. Implemented simple auto-increment ID for new tasks
+
+---
+
+## 🚀 Improvement
+
+Improved error handling and validation:
+- Added proper validation for request body
+- Ensured consistent error responses
+- Prevented invalid data from being processed
+
+---
+
+## 📡 API Endpoints
+
+### GET /tasks
+Retrieve all tasks
+
+### GET /tasks/:id
+Retrieve a task by ID
+
+### POST /tasks
+Create a new task
+
+Request Body:

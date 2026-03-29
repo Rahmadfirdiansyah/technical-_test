@@ -5,6 +5,7 @@ import "stability-test-task-api/models"
 var Tasks = []models.Task{
 	{ID: 1, Title: "Learn Go", Done: false},
 	{ID: 2, Title: "Build API", Done: false},
+	{ID: 3, Title: "Test API", Done: false},
 }
 
 func GetAllTasks() []models.Task {
@@ -32,4 +33,5 @@ func DeleteTask(id int) bool {
 			return true
 		}
 	}
+	return false
 }
