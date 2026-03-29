@@ -49,9 +49,96 @@ DELETE /tasks/:id
 ```
 
 2. Missing input validation in CreateTask (allowed empty title)
+
+#### Before 
+
+```golang
+  if err := c.BodyParser(&task); err != nil {
+      return err
+  }
+```
+
+#### After
+
+```golang
+	if err := c.BodyParser(&task); err != nil {
+		return c.Status(400).JSON(fiber.Map{
+			"error": "invalid request body",
+		})
+	}
+
+	if task.Title == "" {
+		return c.Status(400).JSON(fiber.Map{
+			"error": "title is required",
+		})
+	}
+```
+
 3. No error handling for invalid ID (strconv.Atoi error ignored)
+
+#### Before 
+
+```golang
+  id, _ := strconv.Atoi(idParam)
+```
+
+#### After
+
+```golang
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		return c.Status(400).JSON(fiber.Map{
+			"error": "invalid task ID",
+		})
+	}
+```
+
 4. Delete endpoint always returned success even if task was not found
+
+#### Before 
+
+```golang
+  store.DeleteTask(id)
+
+  return c.JSON(fiber.Map{
+      "message": "deleted",
+  })
+```
+
+#### After
+
+```golang
+  deleted := store.DeleteTask(id)
+
+	if !deleted {
+		return c.Status(404).JSON(fiber.Map{
+			"error": "task not found",
+		})
+	}
+
+	return c.JSON(fiber.Map{
+		"message": "deleted",
+	})
+```
+
 5. Task ID was not auto-generated, causing potential duplicate IDs
+
+#### Before 
+
+```golang
+  func AddTask(task models.Task) {
+    Tasks = append(Tasks, task)
+  }
+```
+
+#### After
+
+```golang
+  func AddTask(task models.Task) {
+    task.ID = len(Tasks) + 1
+    Tasks = append(Tasks, task)
+  }
+```
 
 ---
 
@@ -85,4 +172,5 @@ Retrieve a task by ID
 ### POST /tasks
 Create a new task
 
-Request Body:
+### Delete /tasks/:id
+Delete a task by ID
