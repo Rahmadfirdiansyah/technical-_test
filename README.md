@@ -30,13 +30,13 @@ DELETE /tasks/:id
 
 #### Before 
 
-```http
+```golang
   GET /api/items
 ```
 
 #### After
 
-```http
+```golang
   GET /api/items
 ```
 
