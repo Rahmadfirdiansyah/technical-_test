@@ -31,13 +31,21 @@ DELETE /tasks/:id
 #### Before 
 
 ```golang
-  GET /api/items
+  if task == nil {
+    return c.Status(200).JSON(fiber.Map{
+        "error": "task not found",
+    })
+}
 ```
 
 #### After
 
 ```golang
-  GET /api/items
+  if task == nil {
+    return c.Status(404).JSON(fiber.Map{
+        "error": "task not found",
+    })
+}
 ```
 
 2. Missing input validation in CreateTask (allowed empty title)
